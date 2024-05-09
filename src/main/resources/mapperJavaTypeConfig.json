@@ -28,6 +28,10 @@
     "javaType": "java.lang.Integer"
   },
   {
+    "columnType": "tinyint(\\(\\d+\\))?",
+    "javaType": "java.lang.Integer"
+  },
+  {
     "columnType": "int4",
     "javaType": "java.lang.Integer"
   },

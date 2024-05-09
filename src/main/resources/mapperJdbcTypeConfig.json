@@ -28,6 +28,10 @@
     "jdbcType": "INTEGER"
   },
   {
+    "columnType": "tinyint(\\(\\d+\\))?",
+    "jdbcType": "TINYINT"
+  },
+  {
     "columnType": "int4",
     "jdbcType": "INTEGER"
   },

@@ -77,7 +77,8 @@ public class ${domainName}Controller extends BaseController {
         // pageDTO.setIsDelete(YesNoEnum.NO.value + "");
         startPage();
         List<${domainName}ExportDTO> list = ${domainName?uncap_first}Service.conditionalQueryPage(pageDTO);
-        return R.page(list);
+        PageInfo pageInfo = new PageInfo(list);
+        return R.page(pageInfo.getTotal(), pageInfo.getPageSize(), pageInfo.getPageNum(), pageInfo.getList());
     }
 
     /**

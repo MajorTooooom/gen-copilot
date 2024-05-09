@@ -12,7 +12,7 @@
         :data="tableData"
         :fit="true"
         :header-cell-style="getHeaderCellStyle"
-        :max-height="350"
+        :max-height="300"
         :row-style="getRowStyle"
         :stripe="true"
         size="mini"

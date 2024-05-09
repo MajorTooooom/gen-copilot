@@ -21,7 +21,14 @@
         @openUpdate="openUpdate"
         @pageChange="page">
     </dynamic-table>
-    <el-dialog :custom-class="'domain-dialog-clazz'" :destroy-on-close="true" :title="domainDialogVo.title" :top="'5vh'" :visible.sync="domainDialogVo.show" :width="'85%'">
+    <el-dialog
+        :custom-class="'domain-dialog-clazz'"
+        :destroy-on-close="true"
+        :title="domainDialogVo.title"
+        :top="'5vh'"
+        :visible.sync="domainDialogVo.show"
+        :close-on-click-modal="false"
+        :width="'85%'">
       <dynamic-form
           v-if="domainDialogVo.mode==='add'"
           :key="projectCfgAddFormKey"

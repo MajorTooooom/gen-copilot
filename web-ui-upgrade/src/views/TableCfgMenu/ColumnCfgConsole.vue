@@ -9,7 +9,7 @@
         title="提示"
         width="90%">
       <div class="column-cfg-console-body">
-        <span>这是一段信息mode={{ mode }}</span>
+        <!--<span>这是一段信息mode={{ mode }}</span>-->
         <dynamic-form
             ref="tableCfgAddUpdateForm"
             :fields="tableCfgFields"

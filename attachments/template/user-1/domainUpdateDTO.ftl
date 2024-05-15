@@ -31,11 +31,7 @@ public class ${domainName}UpdateDTO {
     <#if isGenSwagger! == "true">
     @ApiModelProperty(value = "${((column.columnSwaggerComment?trim!"")?length > 0)?then(column.columnSwaggerComment, column.javaName)}"${(column.columnKey!?has_content && column.columnKey == "PRI")?then(", required = true",", required = false")})
     </#if>
-    <#if column.columnKey!?has_content && column.columnKey == "PRI">
-    @NotNull(message = "${((column.columnValidationComment?trim!"")?length > 0)?then(column.columnValidationComment, column.javaName)}不能为空")
-    <#else>
     //@${((column.javaType?trim!"") == "java.lang.String")?then("NotBlank","NotNull")}(message = "${((column.columnValidationComment?trim!"")?length > 0)?then(column.columnValidationComment, column.javaName)}不能为空")
-    </#if>
     private ${column.javaTypeClassName} ${column.javaName};
     <#if column?has_next>
 

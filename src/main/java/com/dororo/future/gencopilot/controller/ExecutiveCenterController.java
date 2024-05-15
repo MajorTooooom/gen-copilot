@@ -7,6 +7,7 @@ import com.dororo.future.gencopilot.dto.RenderReqDTO;
 import com.dororo.future.gencopilot.dto.common.R;
 import com.dororo.future.gencopilot.enums.RenderModeEnum;
 import com.dororo.future.gencopilot.service.ExecutiveCenterService;
+import com.dororo.future.gencopilot.service.ExecutiveCfgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ExecutiveCenterController {
     @Autowired
     private ExecutiveCenterService executiveCenterService;
+    @Autowired
+    private ExecutiveCfgService executiveCfgService;
 
     @PostMapping("/uniteExecutiveOptions")
     public R getUniteExecutiveOptions() {
@@ -47,5 +50,15 @@ public class ExecutiveCenterController {
     @GetMapping("/download/{name}")
     public void download(@PathVariable("name") String name, HttpServletResponse response) {
         executiveCenterService.download(name, response);
+    }
+
+    @GetMapping("/getHistoryCfgs")
+    public R getHistoryCfgs() {
+        return R.successData(executiveCfgService.getHistoryCfgs());
+    }
+
+    @GetMapping("/useHistoryCfg")
+    public R useHistoryCfg(@RequestParam Integer id) {
+        return R.successData(executiveCfgService.useHistoryCfg(id));
     }
 }

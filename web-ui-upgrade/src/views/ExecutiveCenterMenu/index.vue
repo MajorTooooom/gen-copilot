@@ -14,6 +14,7 @@
       <el-form-item label="">
         <el-button style="min-width: 200px;" type="primary" @click="conventionOverConfiguration">约定大于配置</el-button>
         <el-button type="warning" @click="resetPresuppose">重 置</el-button>
+        <el-button style="min-width: 600px;" type="success" @click="openHistory">曾经执行过的配置</el-button>
       </el-form-item>
     </el-form>
     <!--  template  -->
@@ -89,12 +90,32 @@
         <el-button size="mini" type="warning" @click="exDialogVo.show = false">朕 已 阅</el-button>
       </span>
     </el-dialog>
+    <!--选择历史配置-->
+    <el-dialog
+        title="执行过的历史配置"
+        :visible.sync="historyCfgVo.show"
+        :custom-class="'ex-dialog-clazz'"
+        width="80%">
+      <el-table
+          :data="historyCfgVo.tableData"
+          style="width: 100%">
+        <el-table-column prop="updateTime" label="渲染时间" width="200"></el-table-column>
+        <el-table-column prop="cfgData" label="内容"></el-table-column>
+        <el-table-column label="操作" width="150">
+          <template slot-scope="scope">
+            <el-button size="mini" type="primary" @click="useHistory(scope.row.id)">再次使用</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="mini" type="warning" @click="exDialogVo.show = false">O K</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {Notification, MessageBox, Message, Loading} from 'element-ui';
-import {conventionOverConfigurationFn, getCellStyleFn, getHeaderCellStyleFn, getRowStyleFn, renderFn, uniteExecutiveOptionsFn,} from '@/api/executiveCenterMenuApi';
+import {conventionOverConfigurationFn, getCellStyleFn, getHeaderCellStyleFn, getHistoryCfgsFn, getRowStyleFn, renderFn, uniteExecutiveOptionsFn, useHistoryCfgFn} from '@/api/executiveCenterMenuApi';
 
 export default {
   name: "ExecutiveCenterMenu",
@@ -113,6 +134,10 @@ export default {
       exDialogVo: {
         show: false,
         textarea: '',
+      },
+      historyCfgVo: {
+        show: false,
+        tableData: [],
       },
     }
   },
@@ -191,12 +216,31 @@ export default {
       this.exDialogVo.textarea = row.renderException + "";
       this.exDialogVo.show = true;
     },
+    openHistory() {
+      this.getHistoryCfgs();
+      this.historyCfgVo.show = true;
+    },
+    getHistoryCfgs() {
+      getHistoryCfgsFn().then(res => {
+        this.historyCfgVo.tableData = res.data;
+      });
+    },
+    useHistory(id) {
+      useHistoryCfgFn({id: id}).then(res => {
+        // console.log(res);
+        this.historyCfgVo.show = false;
+        this.cfgFormVo.tableCfgId = res.data.tableCfgId;
+        this.cfgFormVo.projectCfgId = res.data.projectCfgId;
+        this.templateTableData = res.data.list;
+      });
+    },
   },//methods
   watch: {
     // 'searchParamVo.topPath': {handler: function (val, oldVal) {if (val) {this.searchParamVo.topPath = val;this.searchParamVo.topPath = '';}}, deep: true},
   },
   mounted() {
     this.getUniteExecutiveOptions();
+    this.getHistoryCfgs();
   },
 }
 </script>

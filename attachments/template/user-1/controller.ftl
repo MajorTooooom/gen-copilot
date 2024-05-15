@@ -51,7 +51,7 @@ public class ${domainName}Controller extends BaseController {
         return R.ok();
     }
 
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     @ApiOperation(value = "delete", notes = "删除")
     public R delete(@PathVariable(value = "id") Integer id) {
         ${domainName?uncap_first}Service.deleteByPrimaryKey(id);
@@ -65,7 +65,7 @@ public class ${domainName}Controller extends BaseController {
         return R.ok();
     }
 
-    @GetMapping("/get/{id}")
+    @PostMapping("/get/{id}")
     @ApiOperation(value = "get", notes = "查询")
     public R get(@PathVariable(value = "id") Integer id) {
         ${domainName} ${domainName?uncap_first} = ${domainName?uncap_first}Service.selectByPrimaryKey(id);

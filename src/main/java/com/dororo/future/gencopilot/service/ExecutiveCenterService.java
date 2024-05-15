@@ -41,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import static com.sun.jmx.snmp.defaults.DefaultPaths.getTmpDir;
@@ -57,6 +58,8 @@ public class ExecutiveCenterService {
     private ColumnCfgMapper columnCfgMapper;
     @Autowired
     private GenSysUserMapper genSysUserMapper;
+    @Autowired
+    private ExecutiveCfgService executiveCfgService;
 
 
     public UniteExecutiveOptionsResVo getUniteExecutiveOptions() {
@@ -234,6 +237,8 @@ public class ExecutiveCenterService {
     }
 
     public RenderResVo renderDispatch(RenderReqDTO reqDTO) {
+        LoggedGenSysUser user = LoginUserContextHolder.getUser();
+        Assert.notNull(user, "用户未登录");
         // 返回结果
         RenderResVo resVo = new RenderResVo();
         // 模板环境(公共)
@@ -267,6 +272,10 @@ public class ExecutiveCenterService {
                 failCount++;
             }
         }
+
+        // 操作完毕,记录本次使用的`reqDTO`信息
+        CompletableFuture.runAsync(() -> executiveCfgService.smartSave(user.getId(), reqDTO));
+
         // 简化list
         List<TemplateCfg> simpleList = templateCfgs.stream().map(cfg -> TemplateCfg.builder().id(cfg.getId()).renderSuccess(cfg.getRenderSuccess()).renderException(cfg.getRenderException()).build()).collect(Collectors.toList());
         resVo.setList(simpleList);

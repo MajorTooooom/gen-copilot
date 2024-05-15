@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dororo.future.gencopilot.mapper.ExecutiveCfgMapper">
+    <resultMap id="BaseResultMap" type="com.dororo.future.gencopilot.domain.ExecutiveCfg">
+        <!--@mbg.generated-->
+        <!--@Table t_executive_cfg-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="cfg_data" jdbcType="LONGVARCHAR" property="cfgData"/>
+        <result column="create_time" jdbcType="LONGVARCHAR" property="createTime"/>
+        <result column="update_time" jdbcType="LONGVARCHAR" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id,
+        user_id,
+        cfg_data,
+        create_time,
+        update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_executive_cfg
+        WHERE id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        DELETE
+        FROM t_executive_cfg
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dororo.future.gencopilot.domain.ExecutiveCfg" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        INSERT INTO t_executive_cfg (user_id, cfg_data, create_time, update_time)
+        VALUES (#{userId,jdbcType=INTEGER}, #{cfgData,jdbcType=LONGVARCHAR}, #{createTime,jdbcType=LONGVARCHAR}, #{updateTime,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dororo.future.gencopilot.domain.ExecutiveCfg" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        INSERT INTO t_executive_cfg
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="cfgData != null">
+                cfg_data,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="cfgData != null">
+                #{cfgData,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dororo.future.gencopilot.domain.ExecutiveCfg">
+        <!--@mbg.generated-->
+        UPDATE t_executive_cfg
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="cfgData != null">
+                cfg_data = #{cfgData,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dororo.future.gencopilot.domain.ExecutiveCfg">
+        <!--@mbg.generated-->
+        UPDATE t_executive_cfg
+        SET user_id     = #{userId,jdbcType=INTEGER},
+            cfg_data    = #{cfgData,jdbcType=LONGVARCHAR},
+            create_time = #{createTime,jdbcType=LONGVARCHAR},
+            update_time = #{updateTime,jdbcType=LONGVARCHAR}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="findByAll" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_executive_cfg
+        <where>
+            <if test="id != null">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="cfgData != null">
+                AND cfg_data = #{cfgData,jdbcType=LONGVARCHAR}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=LONGVARCHAR}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=LONGVARCHAR}
+            </if>
+        </where>
+    </select>
+    <insert id="insertList">
+        <!--@mbg.generated-->
+    </insert>
+    <select id="selectAll" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_executive_cfg
+    </select>
+
+    <!--auto generated by MybatisCodeHelper on 2024-05-15-->
+    <select id="findOneByAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_executive_cfg
+        <where>
+            <if test="id != null">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="cfgData != null">
+                AND cfg_data = #{cfgData,jdbcType=LONGVARCHAR}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=LONGVARCHAR}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=LONGVARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!--auto generated by MybatisCodeHelper on 2024-05-15-->
+    <select id="selectIdAndUpdateTime" resultMap="BaseResultMap">
+        SELECT id, update_time
+        FROM t_executive_cfg
+    </select>
+</mapper>

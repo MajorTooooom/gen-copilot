@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="GenCopilotApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+  <configuration default="false" name="app" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <envs>
       <env name="LOGBACK_LOG_HOME" value="D:/caches/gen-copilot-logs" />
       <env name="TEST_DEV_ING" value="TRUE" />

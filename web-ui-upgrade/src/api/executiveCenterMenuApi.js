@@ -24,6 +24,21 @@ export function renderFn(data) {
     })
 }
 
+export function getHistoryCfgsFn() {
+    return request({
+        url: '/executiveCenter/getHistoryCfgs',
+        method: 'get',
+    })
+}
+
+export function useHistoryCfgFn(query) {
+    return request({
+        url: '/executiveCenter/useHistoryCfg',
+        method: 'get',
+        params: query
+    })
+}
+
 export function getRowStyleFn({row, rowIndex}) {
     return {backgroundColor: (rowIndex % 2 === 0 ? '#f0f9eb' : '#b7a476'), color: 'black'};
 }

@@ -20,11 +20,15 @@ public class PackageAfterTests {
      */
     public static void main(String[] args) {
         enterLog();
-        copy();
+        // dockerCopy();
+        exe4jCopy();
         quitLog();
     }
 
-    private static void copy() {
+    private static void exe4jCopy() {
+    }
+
+    private static void dockerCopy() {
         // 当前项目的根目录
         String currentDir = SystemUtil.getUserInfo().getCurrentDir();
         // 拷贝数据库文件

@@ -12,7 +12,8 @@ import java.util.Date;
 public class PackageBeforeTests {
     public static void main(String[] args) {
         enterLog();
-        distToNginx();
+        // distToNginx();
+        distToStatic();
         quitLog();
     }
 
@@ -32,7 +33,7 @@ public class PackageBeforeTests {
         // 当前项目的根目录
         String currentDir = SystemUtil.getUserInfo().getCurrentDir();
         // 前端工程的dist目录
-        File dist = FileUtil.file(currentDir, "web-ui", "dist");
+        File dist = FileUtil.file(currentDir, "web-ui-upgrade", "dist");
         Assert.isTrue(FileUtil.exist(dist) && FileUtil.isDirectory(dist), "前端工程下dist目录不存在, 请先执行npm run build");
         // 查询`index.html`文件的时间是否超过10分钟,如果是则发出警告
         if (DateUtil.between(FileUtil.lastModifiedTime(FileUtil.file(dist, "index.html")), new Date(), DateUnit.MINUTE, false) > 10) {

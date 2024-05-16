@@ -48,7 +48,3 @@ attachments/.docker/attachments/db/*.db
 
 /attachments/.docker/attachments/template/
 /attachments/.docker/data/nginx/dist/
-
-
-
-

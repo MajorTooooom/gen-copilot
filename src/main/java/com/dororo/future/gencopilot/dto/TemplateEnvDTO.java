@@ -15,6 +15,7 @@ import java.util.List;
 public class TemplateEnvDTO {
     // from ColumnCfg
     List<ColumnCfg> columns;
+    private ColumnCfg primaryKeyColumnCfg;// 从columns中获取主键cfg
     // from tableCfg
     private String tableName;// 表名
     private String domainName;// 实体类名

@@ -1,3 +1,4 @@
+<#include "环境变量辅助.ftl"/>
 package ${servicePackage};
 
 import cn.hutool.core.collection.CollectionUtil;
@@ -6,20 +7,30 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.TimeInterval;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.exception.ExcelCommonException;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.github.pagehelper.PageHelper;
+import com.zhien.common.auth.dto.LoginUserDTO;
+import com.zhien.common.auth.utils.AuthUserUtils;
 import ${domainPackage}.${domainName};
 import ${dtoPackage}.${domainName}AddDTO;
+import ${dtoPackage}.${domainName}DeleteDTO;
 import ${dtoPackage}.${domainName}ExportDTO;
 import ${dtoPackage}.${domainName}ImportDTO;
 import ${dtoPackage}.${domainName}PageDTO;
 import ${dtoPackage}.${domainName}UpdateDTO;
 import ${easyExcelListenerPackage}.${domainName}ImportListener;
+import ${utilsPackage}.JavaxValidationUtils;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
+
+<#list javaTypes as javaType>
+import ${javaType};
+</#list>
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,12 +50,30 @@ public class ${domainName}Service {
 
     public void add(${domainName}AddDTO addDTO) {
         ${domainName} ${domainName?uncap_first} = Convert.convert(${domainName}.class, addDTO);
-        int i = ${domainName?uncap_first}Mapper.insert(${domainName?uncap_first});
-        Assert.isTrue(i > 0, "新增失败");
+        // TODO 补全其他业务逻辑
+        int i = ${domainName?uncap_first}Mapper.insertSelective(${domainName?uncap_first});
+        Assert.isTrue(i > 0, "新增失败@INSERT");
     }
 
-    public void deleteByPrimaryKey(Integer id) {
-        ${domainName?uncap_first}Mapper.deleteByPrimaryKey(id);
+    public void delete(${primaryKeyColumnCfg.javaTypeClassName} id) {
+        LoginUserDTO user = AuthUserUtils.getCurrentUser();
+        Assert.notNull(user, "用户未登录");
+        ${domainName?uncap_first}Mapper.deleteByPrimaryKey(id);// 物理删除
+        // 逻辑删除
+        // ${domainName} updateVo = ${domainName}.builder().${primaryKeyColumnCfg.javaName}(id).isDeleted(true).build();
+        // ${domainName?uncap_first}Mapper.updateByPrimaryKeySelective(updateVo);
+    }
+
+    public List delete(${domainName}DeleteDTO deleteDTO) {
+        List<JSONObject> result = new ArrayList<>();
+        for (${primaryKeyColumnCfg.javaTypeClassName} id : deleteDTO.getIds()) {
+            try {
+                delete(id);
+            } catch (Exception e) {
+                result.add(JSONUtil.createObj().put("id", id).put("msg", e.getMessage()));
+            }
+        }
+        return result;
     }
 
     public void update(${domainName}UpdateDTO updateDTO) {
@@ -52,7 +81,7 @@ public class ${domainName}Service {
         ${domainName?uncap_first}Mapper.updateByPrimaryKeySelective(${domainName?uncap_first});
     }
 
-    public ${domainName} selectByPrimaryKey(Integer id) {
+    public ${domainName} selectByPrimaryKey(${primaryKeyColumnCfg.javaTypeClassName} id) {
         return ${domainName?uncap_first}Mapper.selectByPrimaryKey(id);
     }
 
@@ -83,8 +112,8 @@ public class ${domainName}Service {
         return result;
     }
 
-    public Map<String, ${domainName}ImportListener.ImportResultDTO> importExcel(MultipartFile[] files) {
-        Map<String, ${domainName}ImportListener.ImportResultDTO> result = new HashMap<>();
+    public List importExcel(MultipartFile[] files) {
+        List<${domainName}ImportListener.ImportResultDTO> result = new ArrayList<>();
         for (MultipartFile file : files) {
             ${domainName}ImportListener.ImportResultDTO importResultDTO = new ${domainName}ImportListener.ImportResultDTO();
             try {
@@ -93,7 +122,7 @@ public class ${domainName}Service {
             } catch (Exception e) {
                 importResultDTO.addMessage(e.getMessage());
             }
-            result.put(file.getOriginalFilename(), importResultDTO);
+            result.add(importResultDTO);
         }
         return result;
     }
@@ -113,21 +142,18 @@ public class ${domainName}Service {
             importResultDTO.addMessage(StrUtil.format("[{}]文件格式错误,请检查文件格式或另存为", file.getOriginalFilename()));
             return;
         }
-        // listener.invoke()逐行处理
+        /**
+         * 逐行处理,详情见{@link ${domainName}ImportListener#onException}、{@link ${domainName}ImportListener#invoke}等
+         */
         sheet.doRead();
     }
 
-    public void handleSingleExcelRow(${domainName}ImportDTO row, ${domainName}ImportListener.ImportResultDTO importResultDTO) {
-        // LoginUserDTO currentUser = AuthUserUtils.getCurrentUser();
-        // Assert.notNull(currentUser, "当前登录用户不存在");
-
-        // TODO 具体的业务逻辑校验,具体根据业务需求编写
-        // TODO 具体的业务逻辑校验,具体根据业务需求编写
-        // TODO 具体的业务逻辑校验,具体根据业务需求编写
-
-        // TODO excel行转数据库实体     
-        ${domainName} ${domainName?uncap_first} = Convert.convert(${domainName}.class, row);
-        ${domainName?uncap_first}Mapper.insert(${domainName?uncap_first});
-
+    public void handleSingleExcelSingleRow(${domainName}ImportDTO row) {
+        // 导入时新增的最终逻辑与页面新增逻辑一致
+        ${domainName}AddDTO addDTO = Convert.convert(${domainName}AddDTO.class, row);
+        // 手动触发注解校验
+        JavaxValidationUtils.verify(addDTO);
+        // 走新增逻辑
+        add(addDTO);
     }
 }

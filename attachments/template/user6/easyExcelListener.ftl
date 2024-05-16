@@ -60,7 +60,7 @@ public class ${domainName}ImportListener implements ReadListener<${domainName}Im
         }
         // 其他异常
         Integer rowIndex = context.readRowHolder().getRowIndex();
-        String msg = StrUtil.format("第{}行数据转换异常:{}", rowIndex, exception.getMessage());
+        String msg = StrUtil.format("第{}行数据转换异常:{}", rowIndex+1, exception.getMessage());
         importResultDTO.addMessage(msg);
     }
 
@@ -73,7 +73,7 @@ public class ${domainName}ImportListener implements ReadListener<${domainName}Im
     public void invoke(${domainName}ImportDTO data, AnalysisContext context) {
         Integer rowIndex = context.readRowHolder().getRowIndex();
         try {
-            // (1)如果前三个空格都是空,则认为是空行(EasyExcel不认为是空行,所以需要自己判断)
+            // (1)如果前三个空格都是空串,则认为是空行(EasyExcel不认为是空行,所以需要自己判断)
             // TODO 需要改写为自己的业务逻辑
             // TODO 需要改写为自己的业务逻辑
             // TODO 需要改写为自己的业务逻辑
@@ -110,21 +110,21 @@ public class ${domainName}ImportListener implements ReadListener<${domainName}Im
                             .filter(StrUtil::isNotBlank)
                             .map(StrUtil::trim)
                             .filter(StrUtil::isNotBlank)
-                            .map(tmp -> StrUtil.removeAll(tmp, ' '))
+                            // .map(tmp -> StrUtil.removeAll(tmp, ' '))// 去除所有空格需要根据业务需求,一般不去除
                             .filter(StrUtil::isNotBlank)
                             .orElse(null);
                     declaredField.set(data, newVal);
                 }
             }
 
-            // 行号
+            // 扩展字段:行号
             data.setRowNum(rowIndex + 1);
 
-            // javaxValidation校验
+            // 主动触发javaxValidation校验
             JavaxValidationUtils.verify(data);
 
             // 业务处理
-            SpringUtils.getBean(${domainName}Service.class).handleSingleExcelRow(data, importResultDTO);
+            SpringUtils.getBean(${domainName}Service.class).handleSingleExcelSingleRow(data);
             importResultDTO.incrementAndGetSuccessNum();
         } catch (Exception e) {
             importResultDTO.incrementAndGetFailNum();

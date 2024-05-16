@@ -123,6 +123,10 @@ public class ExecutiveCenterService {
                 templateCfg.setExpectName(StrUtil.format("{}AddDTO.java", tableCfg.getDomainName()));
                 templateCfg.setDestDirAbsPath(projectCfg.getSourceCodeAbsPath());
                 templateCfg.setDestPackage(projectCfg.getDtoPackage());
+            } else if (StrUtil.equalsIgnoreCase(mainName, "domainDeleteDTO") || StrUtil.equalsIgnoreCase(mainName, "entityDeleteDTO")) {
+                templateCfg.setExpectName(StrUtil.format("{}DeleteDTO.java", tableCfg.getDomainName()));
+                templateCfg.setDestDirAbsPath(projectCfg.getSourceCodeAbsPath());
+                templateCfg.setDestPackage(projectCfg.getDtoPackage());
             } else if (StrUtil.equalsIgnoreCase(mainName, "domainExportDTO") || StrUtil.equalsIgnoreCase(mainName, "entityExportDTO")) {
                 templateCfg.setExpectName(StrUtil.format("{}ExportDTO.java", tableCfg.getDomainName()));
                 templateCfg.setDestDirAbsPath(projectCfg.getSourceCodeAbsPath());
@@ -197,6 +201,9 @@ public class ExecutiveCenterService {
         // 字段列表
         // 注解注释的文字不能出现换行符,否则将导致报错
         templateEnv.setColumns(fixColumnCfgComment(columnCfgs));
+        // 从columns中获取主键字段名
+        ColumnCfg primaryKeyColumnCfg = columnCfgs.stream().filter(c -> StrUtil.equalsIgnoreCase("PRI", c.getColumnKey())).findFirst().orElse(null);
+        templateEnv.setPrimaryKeyColumnCfg(primaryKeyColumnCfg);
         // 时间格式化
         templateEnv.setDateTime(DateUtil.now());
         // 作者
@@ -274,7 +281,11 @@ public class ExecutiveCenterService {
         }
 
         // 操作完毕,记录本次使用的`reqDTO`信息
-        CompletableFuture.runAsync(() -> executiveCfgService.smartSave(user.getId(), reqDTO));
+        CompletableFuture.runAsync(() -> executiveCfgService.smartSave(user.getId(), reqDTO)).whenComplete((v, t) -> {
+            if (t != null) {
+                t.printStackTrace();
+            }
+        });
 
         // 简化list
         List<TemplateCfg> simpleList = templateCfgs.stream().map(cfg -> TemplateCfg.builder().id(cfg.getId()).renderSuccess(cfg.getRenderSuccess()).renderException(cfg.getRenderException()).build()).collect(Collectors.toList());

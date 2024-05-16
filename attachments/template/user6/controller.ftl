@@ -10,11 +10,13 @@ import com.zhien.common.core.controller.BaseController;
 import com.zhien.common.core.domain.R;
 import ${domainPackage}.${domainName};
 import ${dtoPackage}.${domainName}AddDTO;
+import ${dtoPackage}.${domainName}DeleteDTO;
 import ${dtoPackage}.${domainName}ExportDTO;
 <#--import ${dtoPackage}.${domainName}ImportDTO;-->
 import ${dtoPackage}.${domainName}PageDTO;
 import ${dtoPackage}.${domainName}UpdateDTO;
 import ${servicePackage}.${domainName}Service;
+import ${utilsPackage}.EasyExcelUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
@@ -53,9 +55,15 @@ public class ${domainName}Controller extends BaseController {
 
     @GetMapping("/delete/{id}")
     @ApiOperation(value = "delete", notes = "删除")
-    public R delete(@PathVariable(value = "id") Integer id) {
-        ${domainName?uncap_first}Service.deleteByPrimaryKey(id);
+    public R delete(@PathVariable(value = "id") ${primaryKeyColumnCfg.javaTypeClassName} id) {
+        ${domainName?uncap_first}Service.delete(id);
         return R.ok();
+    }
+
+    @PostMapping("/delete")
+    @ApiOperation(value = "delete", notes = "批量删除")
+    public R delete(@RequestBody ${domainName}DeleteDTO deleteDTO) {
+        return R.data(${domainName?uncap_first}Service.delete(deleteDTO));
     }
 
     @PostMapping("/update")
@@ -67,7 +75,7 @@ public class ${domainName}Controller extends BaseController {
 
     @GetMapping("/get/{id}")
     @ApiOperation(value = "get", notes = "查询")
-    public R get(@PathVariable(value = "id") Integer id) {
+    public R get(@PathVariable(value = "id") ${primaryKeyColumnCfg.javaTypeClassName} id) {
         ${domainName} ${domainName?uncap_first} = ${domainName?uncap_first}Service.selectByPrimaryKey(id);
         return R.data(${domainName?uncap_first});
     }
@@ -79,7 +87,7 @@ public class ${domainName}Controller extends BaseController {
         startPage();
         List<${domainName}ExportDTO> list = ${domainName?uncap_first}Service.conditionalQueryPage(pageDTO);
         PageInfo pageInfo = new PageInfo(list);
-        return R.page(pageInfo.getTotal(), pageInfo.getPageSize(), pageInfo.getPageNum(), pageInfo.getList());
+        return R.page(pageInfo.getTotal(), pageInfo.getPageSize(), pageInfo.getList());
     }
 
     /**
@@ -90,20 +98,7 @@ public class ${domainName}Controller extends BaseController {
     public void export(@RequestBody @Validated ${domainName}PageDTO pageDTO, HttpServletResponse response) throws IOException {
         // pageDTO.setIsDelete(YesNoEnum.NO.value + "");
         List<${domainName}ExportDTO> list = ${domainName?uncap_first}Service.conditionalQueryAllPage(pageDTO);
-        try {
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            response.setCharacterEncoding("utf-8");
-            String businessName = StrUtil.format("{}_{}", "${domainChineseDescription}", DateUtil.format(DateUtil.date(), "yyyyMMdd_HHmmss"));
-            String fileName = URLEncoder.encode(businessName, "UTF-8").replaceAll("\\+", "%20");
-            response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
-            EasyExcel.write(response.getOutputStream(), ${domainName}ExportDTO.class).autoCloseStream(Boolean.FALSE).sheet("data").doWrite(list);
-        } catch (Exception e) {
-            response.reset();
-            response.setContentType("application/json");
-            response.setCharacterEncoding("utf-8");
-            R error = R.error("下载文件失败" + e.getMessage());
-            response.getWriter().println(JSONUtil.toJsonStr(error));
-        }
+        EasyExcelUtils.export(response, list, SysCfgExportDTO.class, "${domainChineseDescription}");
     }
 
     @PostMapping("/import")

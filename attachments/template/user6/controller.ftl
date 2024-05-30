@@ -98,7 +98,7 @@ public class ${domainName}Controller extends BaseController {
     public void export(@RequestBody @Validated ${domainName}PageDTO pageDTO, HttpServletResponse response) throws IOException {
         // pageDTO.setIsDelete(YesNoEnum.NO.value + "");
         List<${domainName}ExportDTO> list = ${domainName?uncap_first}Service.conditionalQueryAllPage(pageDTO);
-        EasyExcelUtils.export(response, list, SysCfgExportDTO.class, "${domainChineseDescription}");
+        EasyExcelUtils.export(response, list, ${domainName}ExportDTO.class, "${domainChineseDescription}");
     }
 
     @PostMapping("/import")

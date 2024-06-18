@@ -48,6 +48,10 @@
     "javaType": "java.util.Date"
   },
   {
+    "columnType": "date",
+    "javaType": "java.util.Date"
+  },
+  {
     "columnType": "timestamp",
     "javaType": "java.util.Date"
   },

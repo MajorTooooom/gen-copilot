@@ -48,6 +48,10 @@
     "jdbcType": "TIMESTAMP"
   },
   {
+    "columnType": "date",
+    "jdbcType": "TIMESTAMP"
+  },
+  {
     "columnType": "timestamp",
     "jdbcType": "TIMESTAMP"
   },

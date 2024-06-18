@@ -34,6 +34,14 @@ export function deleteRowsFn(data) {
     });
 }
 
+export function exportDictionaryFn(data) {
+    return request({
+        url: '/connCfg/exportDictionary',
+        method: 'post',
+        data,
+    });
+}
+
 export const searchFormFields = [
     {"prop": "id", "label": "ID", "component": "el-input", "disabled": false, "styleMap": {"width": "200px"}},
     {"prop": "cfgName", "label": "配置名称", "component": "el-input", "disabled": false, "styleMap": {"width": "200px"}},

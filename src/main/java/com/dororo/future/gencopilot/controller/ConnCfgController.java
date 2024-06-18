@@ -1,5 +1,6 @@
 package com.dororo.future.gencopilot.controller;
 
+import com.dororo.future.gencopilot.domain.ConnCfg;
 import com.dororo.future.gencopilot.dto.ConnCfgAddDTO;
 import com.dororo.future.gencopilot.dto.ConnCfgDeleteDTO;
 import com.dororo.future.gencopilot.dto.ConnCfgPageDTO;
@@ -47,4 +48,11 @@ public class ConnCfgController {
         return R.successData(connCfgService.elSelectOptions());
     }
 
+    /**
+     * 导出数据库字典
+     */
+    @PostMapping("/exportDictionary")
+    public R exportDictionary(@RequestBody ConnCfg connCfg) {
+        return R.successData(connCfgService.exportDictionary(connCfg));
+    }
 }

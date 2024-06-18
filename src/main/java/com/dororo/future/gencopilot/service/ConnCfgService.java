@@ -86,4 +86,11 @@ public class ConnCfgService {
         }).collect(Collectors.toList());
         return options;
     }
+
+    public String exportDictionary(ConnCfg connCfg) {
+
+
+
+        return null;
+    }
 }

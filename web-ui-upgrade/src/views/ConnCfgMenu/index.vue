@@ -12,17 +12,17 @@
         ref="connCfgTable"
         :data="tableData"
         :domainPrimaryKey="'id'"
+        :expansionMethod01Name="'导出字典'"
+        :expansionMethod01Vif="true"
         :fields="tableFields"
         :headerCellStyle="headerCellStyleVo"
-        :expansionMethod01Vif="true"
-        :expansionMethod01Name="'导出字典'"
         :optColumnWidth="'200'"
         @add="openAdd"
         @deleteRow="deleteRows"
         @deleteRows="deleteRows"
+        @expansionMethod01="expansionMethod01"
         @openUpdate="openUpdate"
-        @pageChange="page"
-        @expansionMethod01="expansionMethod01">
+        @pageChange="page">
     </dynamic-table>
     <el-dialog :custom-class="'domain-dialog-clazz'" :destroy-on-close="true" :title="domainDialogVo.title" :visible.sync="domainDialogVo.show">
       <dynamic-form
@@ -54,7 +54,19 @@
 <script>
 import DynamicForm from '@/components/DynamicForm';
 import DynamicTable from '@/components/DynamicTable';
-import {addFormFields, addFormSubmitFn, deleteRowsFn, headerCellStyle, pageFn, searchFormFields, searchFormInitJson, tableFields, updateFormFields, updateFormSubmitFn} from '@/api/connCfgMenuApi';
+import {
+  addFormFields,
+  addFormSubmitFn,
+  deleteRowsFn,
+  headerCellStyle,
+  pageFn,
+  searchFormFields,
+  searchFormInitJson,
+  tableFields,
+  updateFormFields,
+  updateFormSubmitFn,
+  exportDictionaryFn
+} from '@/api/connCfgMenuApi';
 
 export default {
   name: "ConnCfgMenu",
@@ -127,7 +139,9 @@ export default {
       });
     },
     expansionMethod01(row) {
-      console.log('expansionMethod01:', row);
+      exportDictionaryFn(row).then(res => {
+        console.log('exportDictionaryFn res:', res);
+      });
     },
   },// methods
   watch: {

@@ -33,10 +33,11 @@
           <span v-else>{{ scope.row[field.prop] }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" :width="optColumnWidth">
         <template slot-scope="scope">
           <el-button v-if="rowEditBtnVif" size="mini" type="text" @click="openUpdate(scope.row)">编辑</el-button>
           <el-button v-if="rowDeleteBtnVif" size="mini" type="text" @click="deleteRow(scope.row)">删除</el-button>
+          <el-button v-if="expansionMethod01Vif" size="mini" type="text" @click="expansionMethod01(scope.row)">{{ expansionMethod01Name }}</el-button>
         </template>
       </el-table-column>
       <template slot="empty">
@@ -58,7 +59,7 @@
 </template>
 
 <script>
-import {Notification, MessageBox, Message, Loading} from 'element-ui';
+import {Message, MessageBox} from 'element-ui';
 
 export default {
   name: "DynamicTable",
@@ -96,9 +97,21 @@ export default {
       type: Boolean,
       default: true,
     },
+    expansionMethod01Vif: {
+      type: Boolean,
+      default: false,
+    },
+    expansionMethod01Name: {
+      type: String,
+      default: '扩展方法01',
+    },
     paginationVsh: {
       type: Boolean,
       default: true,
+    },
+    optColumnWidth: {
+      type: String,
+      default: '120',
     },
   },//props
   data() {
@@ -180,6 +193,9 @@ export default {
       }).catch(() => {
         Message({type: 'info', message: '已取消删除'});
       });
+    },
+    expansionMethod01(row) {
+      this.$emit('expansionMethod01', row);
     },
   },//methods
   watch: {

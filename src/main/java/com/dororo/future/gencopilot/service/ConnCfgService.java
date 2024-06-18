@@ -17,7 +17,6 @@ import cn.smallbun.screw.core.engine.EngineFileType;
 import cn.smallbun.screw.core.engine.EngineTemplateType;
 import cn.smallbun.screw.core.execute.DocumentationExecute;
 import cn.smallbun.screw.core.process.ProcessConfig;
-import com.alibaba.druid.pool.DruidDataSource;
 import com.dororo.future.gencopilot.config.DruidDataSourcePool;
 import com.dororo.future.gencopilot.domain.ConnCfg;
 import com.dororo.future.gencopilot.domain.LoggedGenSysUser;
@@ -29,9 +28,10 @@ import com.dororo.future.gencopilot.enums.YesNoEnum;
 import com.dororo.future.gencopilot.holder.LoginUserContextHolder;
 import com.dororo.future.gencopilot.holder.PageContextHolder;
 import com.dororo.future.gencopilot.mapper.ConnCfgMapper;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.sqlite.SQLiteDataSource;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -107,7 +107,8 @@ public class ConnCfgService {
     public Long exportDictionary(ConnCfg connCfg) {
         // 从URL中将数据库名称提取出来
         String url = connCfg.getUrl();
-        String dbName = StrUtil.subAfter(url, "/", false);
+        String dbName = StrUtil.subAfter(url, "//", false);
+        dbName = StrUtil.subAfter(dbName, "/", false);
         dbName = StrUtil.subBefore(dbName, "?", false);
 
 
@@ -118,7 +119,11 @@ public class ConnCfgService {
         File dbDictDir = FileUtil.file(currentDir, "attachments/tmp/db-dict", Convert.toStr(id));
         FileUtil.mkdir(dbDictDir);
         // 数据源
-        DruidDataSource ds = DruidDataSourcePool.getOrDefault(connCfg.getUrl(), connCfg.getUsername(), connCfg.getPassword());
+        HikariDataSource datasource = new HikariDataSource();
+        datasource.setJdbcUrl(connCfg.getUrl());
+        datasource.setUsername(connCfg.getUsername());
+        datasource.setPassword(connCfg.getPassword());
+
         // 三种文档类型都生成
         List<EngineFileType> typeList = ListUtil.toList(EngineFileType.HTML, EngineFileType.WORD, EngineFileType.MD);
         for (EngineFileType engineFileType : typeList) {
@@ -166,7 +171,7 @@ public class ConnCfgService {
                     // 描述
                     .description("数据库设计文档生成")
                     // 数据源
-                    .dataSource(ds)
+                    .dataSource(datasource)
                     // 生成配置
                     .engineConfig(engineConfig)
                     // 生成配置

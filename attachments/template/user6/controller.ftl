@@ -15,6 +15,7 @@ import ${dtoPackage}.${domainName}ExportDTO;
 <#--import ${dtoPackage}.${domainName}ImportDTO;-->
 import ${dtoPackage}.${domainName}PageDTO;
 import ${dtoPackage}.${domainName}UpdateDTO;
+import com.zhien.fac.enums.YesNoEnum;
 import ${servicePackage}.${domainName}Service;
 import ${utilsPackage}.EasyExcelUtils;
 import io.swagger.annotations.Api;
@@ -83,7 +84,7 @@ public class ${domainName}Controller extends BaseController {
     @PostMapping("/page")
     @ApiOperation(value = "page", notes = "条件分页查询")
     public R page(@RequestBody @Validated ${domainName}PageDTO pageDTO) {
-        // pageDTO.setIsEnabled(YesNoEnum.YES.getCode());
+        pageDTO.setIsEnabled(YesNoEnum.YES.getCode());
         startPage();
         List<${domainName}ExportDTO> list = ${domainName?uncap_first}Service.conditionalQueryPage(pageDTO);
         PageInfo pageInfo = new PageInfo(list);
@@ -96,7 +97,7 @@ public class ${domainName}Controller extends BaseController {
     @PostMapping("/export")
     @ApiOperation(value = "export", notes = "导出")
     public void export(@RequestBody @Validated ${domainName}PageDTO pageDTO, HttpServletResponse response) throws IOException {
-        // pageDTO.setIsEnabled(YesNoEnum.YES.getCode());
+        pageDTO.setIsEnabled(YesNoEnum.YES.getCode());
         List<${domainName}ExportDTO> list = ${domainName?uncap_first}Service.conditionalQueryAllPage(pageDTO);
         EasyExcelUtils.export(response, list, ${domainName}ExportDTO.class, "${domainChineseDescription}");
     }

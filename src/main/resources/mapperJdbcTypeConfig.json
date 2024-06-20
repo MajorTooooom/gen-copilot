@@ -56,6 +56,10 @@
     "jdbcType": "TIMESTAMP"
   },
   {
+    "columnType": "json",
+    "jdbcType": "VARCHAR"
+  },
+  {
     "columnType": "tinyint(\\(\\d+\\))?",
     "jdbcType": "TINYINT"
   }

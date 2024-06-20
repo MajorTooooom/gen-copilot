@@ -56,6 +56,10 @@
     "javaType": "java.util.Date"
   },
   {
+    "columnType": "json",
+    "javaType": "java.lang.String"
+  },
+  {
     "columnType": "boolean",
     "javaType": "java.lang.Boolean"
   }

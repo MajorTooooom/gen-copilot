@@ -40,11 +40,11 @@ import java.util.List;
 @Api(tags = "${domainChineseDescription}")
 @RequestMapping("/${domainName?uncap_first}")
 public class ${domainName}Controller extends BaseController {
-    /**
-     * 服务对象
-     */
-    @Autowired
-    private ${domainName}Service ${domainName?uncap_first}Service;
+    private final ${domainName}Service ${domainName?uncap_first}Service;
+
+    public ${domainName}Controller(${domainName}Service ${domainName?uncap_first}Service) {
+    this.${domainName?uncap_first}Service = ${domainName?uncap_first}Service;
+    }
 
     @PostMapping("/add")
     @ApiOperation(value = "add", notes = "新增")

@@ -55,7 +55,7 @@ public class ${domainName}Service {
         ${domainName} ${domainName?uncap_first} = Convert.convert(${domainName}.class, addDTO);
         // `XXXXX`唯一性校验
         Assert.isNull(${domainName?uncap_first}Mapper.selectOne(${domainName}.builder()
-        //.XXXXXX(${domainName?uncap_first}.getXXXXXX()) // TODO改为实际字段
+        .XXXXXX(${domainName?uncap_first}.getXXXXXX()) // TODO改为实际字段
         .isEnabled(YesNoEnum.YES.getCode())
         .build()), "同名 XXXXXX 已存在");// TODO改为实际字段
         // TODO 补全其他业务逻辑

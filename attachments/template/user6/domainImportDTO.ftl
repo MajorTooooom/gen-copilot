@@ -35,10 +35,10 @@ public class ${domainName}ImportDTO {
 
     <#else>
         <#if isGenSwagger! == "true">
-    @ApiModelProperty(value = "${((column.columnSwaggerComment?trim!"")?length > 0)?then(column.columnSwaggerComment, column.javaName)}", required = true)
+    @ApiModelProperty(value = "${((column.columnSwaggerComment?trim!"")?length > 0)?then(column.columnSwaggerComment, column.javaName)}", required = false)
         </#if>
     @ExcelProperty(value = "${((column.columnSwaggerComment?trim!"")?length > 0)?then(column.columnSwaggerComment, column.javaName)}")
-    @${((column.javaType?trim!"") == "java.lang.String")?then("NotBlank","NotNull")}(message = "${((column.columnValidationComment?trim!"")?length > 0)?then(column.columnValidationComment, column.javaName)}不能为空")
+    //@${((column.javaType?trim!"") == "java.lang.String")?then("NotBlank","NotNull")}(message = "${((column.columnValidationComment?trim!"")?length > 0)?then(column.columnValidationComment, column.javaName)}不能为空")
     private ${column.javaTypeClassName} ${column.javaName};
 
     </#if>

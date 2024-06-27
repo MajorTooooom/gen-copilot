@@ -100,6 +100,9 @@ public class ${domainName}Service {
         LoginUserDTO currentUser = AuthUserUtils.getCurrentUser();
         Assert.notNull(currentUser, "用户未登录");
         ${domainName} ${domainName?uncap_first} = Convert.convert(${domainName}.class, updateDTO);
+        // TODO 补全其他业务逻辑
+        ${domainName?uncap_first}.setUpdateUser(currentUser.getLoginName());
+        ${domainName?uncap_first}.setUpdateTime(new Date());
         ${domainName?uncap_first}Mapper.updateByPrimaryKeySelective(${domainName?uncap_first});
     }
 

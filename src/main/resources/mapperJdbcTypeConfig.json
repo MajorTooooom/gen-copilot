@@ -49,7 +49,7 @@
   },
   {
     "columnType": "date",
-    "jdbcType": "TIMESTAMP"
+    "jdbcType": "DATE"
   },
   {
     "columnType": "timestamp",

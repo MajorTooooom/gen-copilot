@@ -23,6 +23,7 @@ import ${dtoPackage}.${domainName}ExportDTO;
 import ${dtoPackage}.${domainName}ImportDTO;
 import ${dtoPackage}.${domainName}PageDTO;
 import ${dtoPackage}.${domainName}UpdateDTO;
+import com.zhien.fac.utils.FieldUtils;
 import ${easyExcelListenerPackage}.${domainName}ImportListener;
 import com.zhien.fac.enums.YesNoEnum;
 import ${utilsPackage}.JavaxValidationUtils;
@@ -53,6 +54,8 @@ public class ${domainName}Service {
         LoginUserDTO currentUser = AuthUserUtils.getCurrentUser();
         Assert.notNull(currentUser, "用户未登录");
         ${domainName} ${domainName?uncap_first} = Convert.convert(${domainName}.class, addDTO);
+        // 对象中字符串类型的字段进行trim操作
+        ${domainName?uncap_first} = FieldUtils.strTrim(${domainName?uncap_first});
         // `XXXXX`唯一性校验
         Assert.isNull(${domainName?uncap_first}Mapper.selectOne(${domainName}.builder()
         // TODO 改为实际字段

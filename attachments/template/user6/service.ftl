@@ -54,7 +54,10 @@ public class ${domainName}Service {
         Assert.notNull(currentUser, "用户未登录");
         ${domainName} ${domainName?uncap_first} = Convert.convert(${domainName}.class, addDTO);
         // `XXXXX`唯一性校验
-        // TODO
+        Assert.isNull(${domainName?uncap_first}Mapper.selectOne(${domainName}.builder()
+        //.XXXXXX(${domainName?uncap_first}.getXXXXXX()) // TODO改为实际字段
+        .isEnabled(YesNoEnum.YES.getCode())
+        .build()), "同名 XXXXXX 已存在");// TODO改为实际字段
         // TODO 补全其他业务逻辑
         //
         ${domainName?uncap_first}.setIsEnabled(YesNoEnum.YES.getCode());

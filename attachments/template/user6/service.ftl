@@ -74,7 +74,7 @@ public class ${domainName}Service {
         // ${domainName?uncap_first}Mapper.deleteByPrimaryKey(id);// 物理删除
         // 逻辑删除
         ${domainName} updateVo = ${domainName}.builder()
-        .${primaryKeyColumnCfg.columnName}(id)
+        .${primaryKeyColumnCfg.javaName}(id)
         .isEnabled(YesNoEnum.NO.getCode())
         .updateUser(user.getLoginName())
         .updateTime(new Date())

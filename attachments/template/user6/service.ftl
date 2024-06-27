@@ -49,8 +49,20 @@ public class ${domainName}Service {
     private ${domainName}Mapper ${domainName?uncap_first}Mapper;
 
     public void add(${domainName}AddDTO addDTO) {
+        LoginUserDTO currentUser = AuthUserUtils.getCurrentUser();
+        Assert.notNull(currentUser, "用户未登录");
         ${domainName} ${domainName?uncap_first} = Convert.convert(${domainName}.class, addDTO);
         // TODO 补全其他业务逻辑
+        // 厂区名称唯一性校验
+
+        //
+        ${domainName} ${domainName?uncap_first} = Convert.convert(${domainName}.class, addDTO);
+        ${domainName?uncap_first}.setIsEnabled(YesNoEnum.YES.getCode());
+        ${domainName?uncap_first}.setCreateUser(currentUser.getLoginName());
+        ${domainName?uncap_first}.setCreateTime(new Date());
+        ${domainName?uncap_first}.setUpdateUser(currentUser.getLoginName());
+        ${domainName?uncap_first}.setUpdateTime(new Date());
+        //
         int i = ${domainName?uncap_first}Mapper.insertSelective(${domainName?uncap_first});
         Assert.isTrue(i > 0, "新增失败@INSERT");
     }
@@ -58,10 +70,15 @@ public class ${domainName}Service {
     public void delete(${primaryKeyColumnCfg.javaTypeClassName} id) {
         LoginUserDTO user = AuthUserUtils.getCurrentUser();
         Assert.notNull(user, "用户未登录");
-        ${domainName?uncap_first}Mapper.deleteByPrimaryKey(id);// 物理删除
+        // ${domainName?uncap_first}Mapper.deleteByPrimaryKey(id);// 物理删除
         // 逻辑删除
-        // ${domainName} updateVo = ${domainName}.builder().${primaryKeyColumnCfg.javaName}(id).isDeleted(true).build();
-        // ${domainName?uncap_first}Mapper.updateByPrimaryKeySelective(updateVo);
+        ${domainName} updateVo = ${domainName}.builder()
+        .${primaryKeyColumnCfg.columnName}(id)
+        .isEnabled(YesNoEnum.NO.getCode())
+        .updateUser(user.getLoginName())
+        .updateTime(new Date())
+        .build();
+        ${domainName?uncap_first}Mapper.updateByPrimaryKeySelective(updateVo);
     }
 
     public List delete(${domainName}DeleteDTO deleteDTO) {
@@ -77,6 +94,8 @@ public class ${domainName}Service {
     }
 
     public void update(${domainName}UpdateDTO updateDTO) {
+        LoginUserDTO currentUser = AuthUserUtils.getCurrentUser();
+        Assert.notNull(currentUser, "用户未登录");
         ${domainName} ${domainName?uncap_first} = Convert.convert(${domainName}.class, updateDTO);
         ${domainName?uncap_first}Mapper.updateByPrimaryKeySelective(${domainName?uncap_first});
     }

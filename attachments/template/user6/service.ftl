@@ -53,11 +53,10 @@ public class ${domainName}Service {
         LoginUserDTO currentUser = AuthUserUtils.getCurrentUser();
         Assert.notNull(currentUser, "用户未登录");
         ${domainName} ${domainName?uncap_first} = Convert.convert(${domainName}.class, addDTO);
+        // `XXXXX`唯一性校验
+        // TODO
         // TODO 补全其他业务逻辑
-        // 厂区名称唯一性校验
-
         //
-        ${domainName} ${domainName?uncap_first} = Convert.convert(${domainName}.class, addDTO);
         ${domainName?uncap_first}.setIsEnabled(YesNoEnum.YES.getCode());
         ${domainName?uncap_first}.setCreateUser(currentUser.getLoginName());
         ${domainName?uncap_first}.setCreateTime(new Date());

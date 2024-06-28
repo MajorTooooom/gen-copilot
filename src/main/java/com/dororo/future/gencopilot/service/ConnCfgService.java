@@ -10,6 +10,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import cn.hutool.system.OsInfo;
 import cn.hutool.system.SystemUtil;
 import cn.smallbun.screw.core.Configuration;
 import cn.smallbun.screw.core.engine.EngineConfig;
@@ -35,6 +36,7 @@ import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -178,6 +180,15 @@ public class ConnCfgService {
                     .produceConfig(processConfig).build();
             // 执行生成
             new DocumentationExecute(config).execute();
+        }
+
+        // 如果是WIN系统,则打开目录
+        if (SystemUtil.getOsInfo().isWindows()) {
+            try {
+                Runtime.getRuntime().exec("explorer.exe " + dbDictDir.getAbsolutePath());
+            } catch (IOException e) {
+                // ignore
+            }
         }
         return id;
     }

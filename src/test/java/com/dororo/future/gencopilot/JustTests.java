@@ -8,7 +8,8 @@ public class JustTests {
 
     @Test
     public void test() {
-        String string = FmUtils.stringToString("${a}", JSONUtil.createObj().putOpt("a", "b"));
-        System.out.println(string);
+        Integer a = 1;
+        Integer b = 1;
+        System.out.println(a.equals(b));
     }
 }

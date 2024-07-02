@@ -53,10 +53,11 @@ public class ${domainName}Service {
     public void add(${domainName}AddDTO addDTO) {
         LoginUserDTO currentUser = AuthUserUtils.getCurrentUser();
         Assert.notNull(currentUser, "用户未登录");
+        //
         ${domainName} ${domainName?uncap_first} = Convert.convert(${domainName}.class, addDTO);
         // 对象中字符串类型的字段进行trim操作
         ${domainName?uncap_first} = FieldUtils.strTrim(${domainName?uncap_first});
-        // `XXXXX`唯一性校验
+        // 唯一性校验
         Assert.isNull(${domainName?uncap_first}Mapper.selectOne(${domainName}.builder()
         // TODO 改为实际字段
         .XXXXXX(${domainName?uncap_first}.getXXXXXX())

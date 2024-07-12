@@ -38,6 +38,14 @@ public class JustTests {
         }).collect(Collectors.toList());
 
 
+        // 按照KEY排序
+        collect = collect.stream().sorted((o1, o2) -> {
+            String key1 = MapUtil.getStr(o1, "columnType");
+            String key2 = MapUtil.getStr(o2, "columnType");
+            return key1.compareTo(key2);
+        }).collect(Collectors.toList());
+
+
         System.out.println(JSONUtil.toJsonStr(collect));
     }
 }

@@ -4,7 +4,7 @@ echo "processing compressed packaging..."
 call :getDatetimeFormat
 set zipFileName=gencopilot_%return%.zip
 echo "zipFileName: %zipFileName%"
-"C:/cafe/app/winRAR/WinRAR.exe" a -r %zipFileName% ./gen-copilot.db
+"C:/cafe/app/zip/WinRAR.exe" a -r %zipFileName% ./gen-copilot.db
 echo done.
 echo ----------------------------------[zip][end  ]---------------------------------------------------------------------
 pause

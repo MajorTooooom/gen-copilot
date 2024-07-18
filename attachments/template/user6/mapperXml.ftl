@@ -44,12 +44,16 @@
         from ${tableName} major
         <where>
             <#list columns as column>
-            <if test="majorRecord.${column.javaName} != null">
-                and major.${column.columnName} = ${r'#{'}majorRecord.${column.javaName},jdbcType=${column.jdbcType}${r'}'}
                 <#if column.javaType == "java.lang.String">
-                <!--and major.${column.columnName} LIKE CONCAT('%',${r'#{'}majorRecord.${column.javaName},jdbcType=${column.jdbcType}${r'}'},'%')-->
+                    <if test="majorRecord.${column.javaName} != null and majorRecord.${column.javaName} != ''">
+                        and major.${column.columnName} = ${r'#{'}majorRecord.${column.javaName},jdbcType=${column.jdbcType}${r'}'}
+                        <!--and major.${column.columnName} LIKE CONCAT('%',${r'#{'}majorRecord.${column.javaName},jdbcType=${column.jdbcType}${r'}'},'%')-->
+                    </if>
+                <#else>
+                    <if test="majorRecord.${column.javaName} != null">
+                        and major.${column.columnName} = ${r'#{'}majorRecord.${column.javaName},jdbcType=${column.jdbcType}${r'}'}
+                    </if>
                 </#if>
-            </if>
             </#list>
         </where>
     </select>

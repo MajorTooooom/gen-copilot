@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="app" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <envs>
+      <env name="LOGBACK_LOG_HOME" value="D:/caches/gen-copilot-logs" />
+      <env name="TEST_DEV_ING" value="TRUE" />
+    </envs>
+    <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+    <module name="gen-copilot" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.dororo.future.gencopilot.GenCopilotApplication" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.dororo.future.gencopilot.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

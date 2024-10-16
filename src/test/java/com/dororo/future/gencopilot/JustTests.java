@@ -1,5 +1,7 @@
 package com.dororo.future.gencopilot;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.json.JSONArray;
@@ -47,5 +49,24 @@ public class JustTests {
 
 
         System.out.println(JSONUtil.toJsonStr(collect));
+    }
+
+    @Test
+    public void test02() {
+        // Original timestamp
+        extracted("2024-10-16T09:54:21.762923874+08:00");
+        extracted("2024-10-16T09:54:21.716886911+08:00");
+        extracted("2024-10-16T09:54:21.684770944+08:00");
+    }
+
+    private static void extracted(String isoTimestamp) {
+        // Parse the ISO 8601 string into a DateTime object
+        DateTime dateTime = DateUtil.parse(isoTimestamp);
+
+        // Format the DateTime object into the desired format
+        String formattedDate = dateTime.toString("yyyy-MM-dd HH:mm:ss");
+
+        // Display the result
+        System.out.println("Formatted Date: " + formattedDate);
     }
 }

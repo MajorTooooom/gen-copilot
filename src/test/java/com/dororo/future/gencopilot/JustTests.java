@@ -54,9 +54,11 @@ public class JustTests {
     @Test
     public void test02() {
         // Original timestamp
-        extracted("2024-10-16T09:54:21.762923874+08:00");
-        extracted("2024-10-16T09:54:21.716886911+08:00");
-        extracted("2024-10-16T09:54:21.684770944+08:00");
+        // extracted("2024-10-16T09:54:21.762923874+08:00");
+        // extracted("2024-10-16T09:54:21.716886911+08:00");
+        // extracted("2024-10-16T09:54:21.684770944+08:00");
+        // extracted("2024-09-20T13:54:25.854973534+08:00");
+        extracted("2024-09-20T13:46:25.856055624+08:00");
     }
 
     private static void extracted(String isoTimestamp) {

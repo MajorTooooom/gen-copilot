@@ -22,5 +22,9 @@ import java.util.List;
 @NoArgsConstructor
 public class ${domainName}DeleteDTO {
     @NotEmpty(message = "ids不能为空")
+    <#if primaryKeyColumnCfg?? && primaryKeyColumnCfg.javaTypeClassName??>
     private List<${primaryKeyColumnCfg.javaTypeClassName}> ids;
+    <#else >
+    private List<Integer> ids;
+    </#if>
 }

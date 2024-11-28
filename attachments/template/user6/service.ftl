@@ -76,13 +76,21 @@ public class ${domainName}Service {
         Assert.isTrue(i > 0, "新增失败@INSERT");
     }
 
+    <#if primaryKeyColumnCfg?? && primaryKeyColumnCfg.javaTypeClassName??>
     public void delete(${primaryKeyColumnCfg.javaTypeClassName} id) {
+    <#else>
+    public void delete(Integer id) {
+    </#if>
         LoginUserDTO user = AuthUserUtils.getCurrentUser();
         Assert.notNull(user, "用户未登录");
         // ${domainName?uncap_first}Mapper.deleteByPrimaryKey(id);// 物理删除
         // 逻辑删除
         ${domainName} updateVo = ${domainName}.builder()
+        <#if primaryKeyColumnCfg?? && primaryKeyColumnCfg.javaTypeClassName??>
         .${primaryKeyColumnCfg.javaName}(id)
+        <#else>
+        .id(id)
+        </#if>
         .isEnabled(YesNoEnum.NO.getCode())
         .updateUser(user.getLoginName())
         .updateTime(new Date())
@@ -92,7 +100,11 @@ public class ${domainName}Service {
 
     public List delete(${domainName}DeleteDTO deleteDTO) {
         List<JSONObject> result = new ArrayList<>();
+        <#if primaryKeyColumnCfg?? && primaryKeyColumnCfg.javaTypeClassName??>
         for (${primaryKeyColumnCfg.javaTypeClassName} id : deleteDTO.getIds()) {
+        <#else>
+        for (Integer id : deleteDTO.getIds()) {
+        </#if>
             try {
                 delete(id);
             } catch (Exception e) {
@@ -112,7 +124,11 @@ public class ${domainName}Service {
         ${domainName?uncap_first}Mapper.updateByPrimaryKeySelective(${domainName?uncap_first});
     }
 
+    <#if primaryKeyColumnCfg?? && primaryKeyColumnCfg.javaTypeClassName??>
     public ${domainName} selectByPrimaryKey(${primaryKeyColumnCfg.javaTypeClassName} id) {
+    <#else>
+    public ${domainName} selectByPrimaryKey(Integer id) {
+    </#if>
         return ${domainName?uncap_first}Mapper.selectByPrimaryKey(id);
     }
 

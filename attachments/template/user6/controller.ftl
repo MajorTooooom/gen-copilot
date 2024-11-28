@@ -56,7 +56,11 @@ public class ${domainName}Controller extends BaseController {
 
     @GetMapping("/delete/{id}")
     @ApiOperation(value = "delete", notes = "删除")
+    <#if primaryKeyColumnCfg?? && primaryKeyColumnCfg.javaTypeClassName??>
     public R delete(@PathVariable(value = "id") ${primaryKeyColumnCfg.javaTypeClassName} id) {
+    <#else >
+    public R delete(@PathVariable(value = "id") Integer id) {
+    </#if>
         ${domainName?uncap_first}Service.delete(id);
         return R.ok();
     }
@@ -76,7 +80,11 @@ public class ${domainName}Controller extends BaseController {
 
     @GetMapping("/get/{id}")
     @ApiOperation(value = "get", notes = "查询")
+    <#if primaryKeyColumnCfg?? && primaryKeyColumnCfg.javaTypeClassName??>
     public R get(@PathVariable(value = "id") ${primaryKeyColumnCfg.javaTypeClassName} id) {
+    <#else >
+    public R get(@PathVariable(value = "id") Integer id) {
+    </#if>
         ${domainName} ${domainName?uncap_first} = ${domainName?uncap_first}Service.selectByPrimaryKey(id);
         return R.data(${domainName?uncap_first});
     }

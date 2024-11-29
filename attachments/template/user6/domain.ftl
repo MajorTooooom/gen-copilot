@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 /**
  * `${domainChineseDescription}`实体类
  * @author ${author!}
- * @date ${dateTime!}
  */
 </#if>
 <#if isGenSwagger! == "true">

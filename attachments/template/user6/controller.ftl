@@ -35,7 +35,6 @@ import java.util.List;
  * `${domainChineseDescription}`控制器
  *
  * @author ${author!}
- * @date ${dateTime!}
  */
 @RestController
 @Api(tags = "${domainChineseDescription}")
